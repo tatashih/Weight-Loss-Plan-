@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>瘦身目標與飲食試算 · TATA FLOW</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF3EE; --paper-2:#F4E9E1; --card:#FFFFFF;
+    --ink:#3B2831; --ink-soft:#8A727C; --line:#EADCD3;
+    --rose:#B85C4D; --rose-soft:#F6E5E0;
+    --plum:#6F4C6E; --plum-soft:#EDE3EC;
+    --gold:#B98A34; --sage:#7E8C6A; --sage-soft:#E9EDE2;
+    --warn:#C0642F;
+    --shadow:0 18px 50px -28px rgba(59,40,49,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Noto Sans TC",sans-serif;
+    background:
+      radial-gradient(120% 80% at 10% -10%,#FBEDE5 0%,transparent 55%),
+      radial-gradient(110% 90% at 100% 0%,#F1E6EE 0%,transparent 50%),
+      var(--paper);
+    color:var(--ink); line-height:1.6; -webkit-font-smoothing:antialiased;
+    padding:clamp(16px,4vw,40px);
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  header{text-align:center;padding:14px 0 30px}
+  .eyebrow{font-size:.72rem;letter-spacing:.42em;color:var(--rose);font-weight:700;text-indent:.42em;margin-bottom:14px}
+  h1{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(2rem,7vw,3.1rem);line-height:1.15;letter-spacing:.01em}
+  h1 .u{background:linear-gradient(transparent 62%,var(--rose-soft) 62%);padding:0 .1em}
+  .sub{color:var(--ink-soft);margin-top:14px;font-size:.98rem;max-width:30em;margin-inline:auto}
+
+  section{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(20px,4.5vw,30px);margin-bottom:20px;box-shadow:var(--shadow)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+  .tag{font-family:"Noto Serif TC",serif;font-weight:700;font-size:.78rem;padding:5px 12px;border-radius:999px;white-space:nowrap;letter-spacing:.08em}
+  .tag.now{background:var(--rose-soft);color:var(--rose)}
+  .tag.goal{background:var(--plum-soft);color:var(--plum)}
+  .tag.food{background:var(--sage-soft);color:var(--sage)}
+  .sec-head h2{font-family:"Noto Serif TC",serif;font-weight:700;font-size:1.28rem}
+  .sec-head .hint{margin-left:auto;color:var(--ink-soft);font-size:.8rem}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+  @media(max-width:460px){.grid{grid-template-columns:1fr}}
+  .field label{display:block;font-size:.82rem;color:var(--ink-soft);margin-bottom:6px;font-weight:500}
+  .field .ipt{position:relative;display:flex;align-items:center}
+  .field input,.field select{
+    width:100%;font-family:"Noto Serif TC",serif;font-size:1.4rem;font-weight:600;color:var(--ink);
+    background:var(--paper);border:1.5px solid var(--line);border-radius:13px;padding:11px 46px 11px 14px;transition:.18s;
+  }
+  .field select{font-family:"Noto Sans TC";font-size:1.02rem;font-weight:500;padding-right:14px;-webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A727C' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 14px center}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--rose);background:#fff;box-shadow:0 0 0 4px var(--rose-soft)}
+  section.goalbox .field input:focus{border-color:var(--plum);box-shadow:0 0 0 4px var(--plum-soft)}
+  section.foodbox .field input:focus,section.foodbox .field select:focus{border-color:var(--sage);box-shadow:0 0 0 4px var(--sage-soft)}
+  .field .unit{position:absolute;right:14px;color:var(--ink-soft);font-size:.85rem;pointer-events:none}
+  .field .sug{font-size:.74rem;color:var(--sage);margin-top:5px}
+
+  .seg{display:inline-flex;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+  .seg button{font-family:"Noto Sans TC";font-size:.92rem;font-weight:700;border:none;cursor:pointer;padding:8px 20px;border-radius:9px;background:transparent;color:var(--ink-soft);transition:.18s}
+  .seg button.on{background:var(--rose);color:#fff;box-shadow:0 6px 14px -6px var(--rose)}
+  .genderrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:2px}
+  .genderrow .lbl{font-size:.82rem;color:var(--ink-soft);font-weight:500}
+
+  .refnote{margin-top:16px;font-size:.82rem;color:var(--plum);background:var(--plum-soft);border-radius:12px;padding:11px 14px;line-height:1.55}
+  .refnote.food{color:var(--sage);background:var(--sage-soft)}
+  .refnote b{font-weight:700}
+
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:460px){.metrics{grid-template-columns:1fr}}
+  .metric{background:var(--paper);border-radius:16px;padding:18px;border:1px solid var(--line);position:relative;overflow:hidden}
+  .metric::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+  .metric.hero::before{background:var(--rose)}
+  .metric.food::before{background:var(--sage)}
+  .metric .k{font-size:.8rem;color:var(--ink-soft);font-weight:500;margin-bottom:4px}
+  .metric .v{font-family:"Noto Serif TC",serif;font-weight:900;font-size:2.1rem;line-height:1;color:var(--ink)}
+  .metric .v small{font-size:.9rem;font-weight:500;color:var(--ink-soft);margin-left:3px}
+  .metric .x{font-size:.76rem;color:var(--ink-soft);margin-top:7px;line-height:1.4}
+
+  .bigrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  @media(max-width:460px){.bigrow{grid-template-columns:1fr}}
+  .big{border-radius:18px;padding:20px;color:#fff;position:relative;overflow:hidden}
+  .big.loss{background:linear-gradient(135deg,#B85C4D,#9C4a3d)}
+  .big.time{background:linear-gradient(135deg,#6F4C6E,#57395a)}
+  .big.cal{background:linear-gradient(135deg,#7E8C6A,#63704f)}
+  .big.def{background:linear-gradient(135deg,#B98A34,#96702a)}
+  .big .k{font-size:.82rem;opacity:.9;font-weight:500;margin-bottom:6px}
+  .big .v{font-family:"Noto Serif TC",serif;font-weight:900;font-size:2.7rem;line-height:1}
+  .big .v small{font-size:1rem;font-weight:500;opacity:.9;margin-left:4px}
+  .big .x{font-size:.78rem;opacity:.88;margin-top:8px}
+
+  .bmiblock{margin-top:6px}
+  .bmi-legend{display:flex;justify-content:space-between;font-size:.72rem;color:var(--ink-soft);margin:6px 2px 0}
+  .bmibar{position:relative;height:12px;border-radius:999px;overflow:hidden;background:linear-gradient(90deg,#9fb0c9 0 14%,#7E8C6A 14% 40%,#D2B24A 40% 55%,#C0642F 55% 100%)}
+  .bmibar .mk{position:absolute;top:-5px;width:3px;height:22px;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 0 2px #fff}
+  .mk.now{background:var(--rose)} .mk.goal{background:var(--plum)}
+  .bmi-caps{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;font-size:.84rem}
+  .bmi-caps .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+  .pacewrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 0 6px}
+  .pacewrap .lbl{font-size:.86rem;color:var(--ink-soft);font-weight:500}
+  .pace{display:inline-flex;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:4px;flex-wrap:wrap}
+  .pace button{font-family:"Noto Sans TC";font-size:.86rem;font-weight:700;border:none;cursor:pointer;padding:8px 16px;border-radius:9px;background:transparent;color:var(--ink-soft);transition:.18s}
+  .pace button.on{background:var(--sage);color:#fff}
+  .pace.rose button.on{background:var(--rose)}
+
+  .path{margin-top:8px}
+  .step{display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px dashed var(--line)}
+  .step:first-child{border-top:none}
+  .step .node{width:34px;height:34px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Noto Serif TC",serif;font-weight:700;font-size:.86rem;color:#fff;background:var(--sage)}
+  .step.start .node{background:var(--rose)}
+  .step.finish .node{background:var(--plum)}
+  .step .body{flex:1;display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .step .m{font-size:.8rem;color:var(--ink-soft);font-weight:500}
+  .step .w{font-family:"Noto Serif TC",serif;font-weight:700;font-size:1.15rem}
+  .step .w small{font-size:.78rem;color:var(--ink-soft);font-weight:400;margin-left:2px}
+  .step .bmi-pill{font-size:.72rem;color:var(--ink-soft);background:var(--paper-2);border-radius:999px;padding:2px 9px}
+
+  /* macro / portion table */
+  .macro{margin-top:6px;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .macro .row{display:grid;grid-template-columns:1.1fr .9fr 1fr;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}
+  .macro .row:first-child{border-top:none}
+  .macro .row.head{background:var(--paper);font-size:.76rem;color:var(--ink-soft);font-weight:700;padding:10px 16px}
+  .macro .nm{display:flex;align-items:center;gap:9px;font-weight:700;font-size:.95rem}
+  .macro .nm .sw{width:10px;height:10px;border-radius:3px}
+  .macro .nm .pct{font-size:.74rem;color:var(--ink-soft);font-weight:500}
+  .macro .kc{font-family:"Noto Serif TC",serif;color:var(--ink-soft);font-size:.95rem}
+  .macro .pt{font-family:"Noto Serif TC",serif;font-weight:900;font-size:1.5rem;text-align:right}
+  .macro .pt small{font-size:.8rem;font-weight:500;color:var(--ink-soft);margin-left:3px}
+  .veg{display:flex;gap:12px;align-items:flex-start;margin-top:14px;background:var(--sage-soft);border-radius:14px;padding:14px 16px;font-size:.86rem;color:#556047;line-height:1.6}
+  .veg b{color:var(--sage)}
+
+  .portion-guide{margin-top:14px;font-size:.82rem;color:var(--ink-soft);line-height:1.7;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .portion-guide b{color:var(--ink)}
+
+  .alert{border-radius:14px;padding:14px 16px;font-size:.88rem;line-height:1.6;margin-top:16px;display:none}
+  .alert.show{display:block}
+  .alert.warn{background:#FCEEE4;border:1px solid #F0C9AC;color:#8C4A22}
+  .alert.info{background:var(--plum-soft);border:1px solid #DDC9DB;color:var(--plum)}
+  .alert b{font-weight:700}
+
+  .note{background:linear-gradient(135deg,#FBF1EA,#F7EBF2);border:1px solid var(--line)}
+  .note h3{font-family:"Noto Serif TC",serif;font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .note p{font-size:.9rem;color:#5f4750;line-height:1.85}
+  .note p+p{margin-top:10px}
+
+  footer{text-align:center;color:var(--ink-soft);font-size:.78rem;padding:14px 0 4px;letter-spacing:.05em}
+  footer .brand{font-family:"Noto Serif TC",serif;color:var(--rose);font-weight:700;letter-spacing:.14em}
+
+  /* ---- submit / CTA ---- */
+  .cta{width:100%;font-family:"Noto Serif TC",serif;font-weight:700;font-size:1.15rem;color:#fff;background:linear-gradient(135deg,#B85C4D,#9C4a3d);border:none;border-radius:16px;padding:16px;cursor:pointer;transition:.18s;box-shadow:0 14px 30px -14px var(--rose)}
+  .cta:hover{filter:brightness(1.05)} .cta:active{transform:translateY(1px)}
+  .cta:disabled{opacity:.6;cursor:default}
+  .submitmsg{margin-top:14px;font-size:.92rem;text-align:center;display:none;line-height:1.6}
+  .submitmsg.show{display:block}
+  .submitmsg.ok{color:var(--sage)} .submitmsg.err{color:var(--warn)}
+  .privacy{font-size:.78rem;color:var(--ink-soft);text-align:center;margin-top:16px;line-height:1.6}
+
+  /* in-app browser hint */
+  .iab-banner{display:none;background:linear-gradient(135deg,#FCEEE4,#F7E7DE);border:1px solid #F0C9AC;color:#8C4A22;border-radius:16px;padding:14px 16px;margin-bottom:18px;font-size:.9rem;line-height:1.65;box-shadow:var(--shadow)}
+  .iab-banner.show{display:block}
+  .iab-banner b{font-weight:700}
+  .iab-banner .h{font-family:"Noto Serif TC",serif;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px;margin-bottom:5px}
+
+  /* ---- A4 report (hidden, rendered to PDF) ---- */
+  #reportWrap{position:fixed;left:-10000px;top:0;z-index:-1}
+  .report{width:794px;background:#fff;color:#3B2831;font-family:"Noto Sans TC",sans-serif;padding:46px 52px;box-sizing:border-box}
+  .report .r-top{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--rose);padding-bottom:16px}
+  .report .r-brand{font-family:"Noto Serif TC",serif;font-weight:900;font-size:27px;letter-spacing:.16em;color:var(--rose);line-height:1.1}
+  .report .r-brand span{display:block;font-family:"Noto Sans TC";font-weight:500;font-size:11px;letter-spacing:.28em;color:var(--ink-soft);margin-top:6px}
+  .report .r-title{text-align:right;font-family:"Noto Serif TC",serif;font-weight:700;font-size:19px}
+  .report .r-title small{display:block;font-family:"Noto Sans TC";font-weight:400;font-size:12px;color:var(--ink-soft);margin-top:5px;letter-spacing:.05em}
+  .report .r-meta{display:flex;gap:30px;font-size:13px;color:#5f4750;margin:16px 0 18px}
+  .report .r-meta b{color:var(--ink);font-weight:700}
+  .report .r-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+  .report .r-panel{border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .report .r-panel.now{background:#FCF3F0} .report .r-panel.goal{background:#F6F0F5}
+  .report .r-panel.food{background:#F3F5EE;grid-column:1/-1;margin-top:15px}
+  .report .r-h{font-family:"Noto Serif TC",serif;font-weight:700;font-size:15px;margin-bottom:13px;display:flex;align-items:center;gap:8px}
+  .report .r-h .pip{width:7px;height:16px;border-radius:3px;display:inline-block}
+  .report .r-list{display:grid;grid-template-columns:1fr 1fr;gap:9px 20px;font-size:13px}
+  .report .r-list .li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed #E3D3CB;padding-bottom:6px;color:#6f5760}
+  .report .r-list .li b{font-family:"Noto Serif TC",serif;font-weight:700;color:var(--ink)}
+  .report .r-macro{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .report .r-mac{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center}
+  .report .r-mac .t{font-size:12px;color:var(--ink-soft)}
+  .report .r-mac .n{font-family:"Noto Serif TC",serif;font-weight:900;font-size:25px;margin-top:3px;color:var(--ink)}
+  .report .r-mac .n small{font-size:12px;color:var(--ink-soft);font-weight:500}
+  .report .r-mac .kc{font-size:11px;color:var(--ink-soft);margin-top:3px}
+  .report .r-veg{font-size:12px;color:#556047;margin-top:13px;line-height:1.7}
+  .report .r-veg b{color:#4e5a3f;font-weight:700}
+  .report .r-note{font-size:11.5px;color:#6f5760;line-height:1.75;border-top:1px solid var(--line);margin-top:18px;padding-top:13px}
+  .report .r-foot{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);margin-top:12px;letter-spacing:.05em}
+  .report .r-foot .bd{font-family:"Noto Serif TC",serif;color:var(--rose);font-weight:700;letter-spacing:.12em}
+
+  /* pages 2 & 3 shared */
+  .report .info-line{font-size:12.5px;color:#5f4750;line-height:2.1;margin:14px 0 8px}
+  .report .info-line .u{display:inline-block;min-width:64px;border-bottom:1px solid #C9B6AE;text-align:center;color:var(--ink);font-weight:700;padding:0 4px}
+  .mtbl{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:6px}
+  .mtbl caption{caption-side:top;text-align:left;font-family:"Noto Serif TC",serif;font-weight:700;font-size:13.5px;margin-bottom:6px;color:var(--ink)}
+  .mtbl th,.mtbl td{border:1px solid #E3D3CB;font-size:11px}
+  .mtbl thead th{background:#EFEAE6;height:22px;color:#6f5760;font-weight:500;font-size:10.5px}
+  .mtbl thead th.rowlab{background:#EAD9D2}
+  .mtbl tbody th{text-align:left;padding:3px 8px;background:#FAF5F1;font-weight:700;color:var(--ink);line-height:1.2}
+  .mtbl tbody th small{display:block;font-weight:400;font-size:8.5px;color:var(--ink-soft)}
+  .mtbl tbody td{height:22px;text-align:center;color:var(--ink);font-family:"Noto Serif TC",serif;font-size:11.5px}
+  .mtbl tr.diff th{background:#F3EEEA;color:var(--ink-soft);font-weight:500}
+  .mtbl tr.diff td{background:#FBF8F5}
+  .mtbl td.pf{background:#FCF3F0;font-weight:700;color:var(--rose)}
+  .tipbox{display:flex;gap:12px;margin-top:11px}
+  .tip{flex:1;background:#F3F5EE;border:1px solid #DEE4D3;border-radius:12px;padding:11px 13px;font-size:10.5px;line-height:1.7;color:#556047}
+  .tip b{color:#4e5a3f;display:block;margin-bottom:3px;font-size:12px;font-family:"Noto Serif TC",serif}
+  .tip.rose{background:#FCF3F0;border-color:#F0D8D0;color:#7a5850}
+  .tip.rose b{color:var(--rose)}
+  /* diet record */
+  .dtbl{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:8px}
+  .dtbl th,.dtbl td{border:1px solid #E3D3CB}
+  .dtbl thead th{background:#EFEAE6;height:28px;font-size:11.5px;color:#6f5760;font-weight:700}
+  .dtbl tbody td{height:90px;vertical-align:top;padding:5px 6px;font-size:10px}
+  .dtbl tbody td.day{background:#FAF5F1;text-align:center;font-family:"Noto Serif TC",serif;font-weight:700;font-size:12px;vertical-align:middle;color:var(--ink)}
+  .target-banner{background:#F3F5EE;border:1px solid #DEE4D3;border-radius:12px;padding:13px 16px;font-size:12.5px;color:#4e5a3f;line-height:1.9;margin-top:14px}
+  .target-banner b{font-family:"Noto Serif TC",serif;color:#3e4a30}
+  .target-banner .cal{font-family:"Noto Serif TC",serif;font-weight:900;font-size:17px;color:var(--sage)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="iab-banner" id="iabBanner">
+    <div class="h">⚠️ 建議用瀏覽器開啟</div>
+    <div id="iabText"></div>
+  </div>
+
+  <header>
+    <div class="eyebrow">循環 · 塑形 · 健康瘦身</div>
+    <h1>你的<span class="u">瘦身目標</span>與飲食試算</h1>
+    <p class="sub">先看懂身體現況，設定溫柔的目標，再算出每天該吃的份量。輸入數字即時運算。</p>
+  </header>
+
+  <!-- 客戶資料 -->
+  <section>
+    <div class="sec-head"><span class="tag now">資料</span><h2>你的基本資料</h2></div>
+    <div class="grid">
+      <div class="field"><label>姓名 / 暱稱 *</label><div class="ipt"><input id="cname" type="text" placeholder="怎麼稱呼你"></div></div>
+      <div class="field"><label>聯絡方式（LINE / 電話，選填）</label><div class="ipt"><input id="ccontact" type="text" placeholder="方便顧問聯繫你"></div></div>
+    </div>
+  </section>
+
+  <!-- 現況 -->
+  <section class="nowbox">
+    <div class="sec-head"><span class="tag now">現況</span><h2>輸入現在的數據</h2><span class="hint">紅字區</span></div>
+    <div class="grid">
+      <div class="field"><label>目前體重</label><div class="ipt"><input id="w" type="number" inputmode="decimal" value="55"><span class="unit">kg</span></div></div>
+      <div class="field"><label>身高</label><div class="ipt"><input id="h" type="number" inputmode="decimal" value="153"><span class="unit">cm</span></div></div>
+      <div class="field"><label>年齡</label><div class="ipt"><input id="a" type="number" inputmode="numeric" value="37"><span class="unit">歲</span></div></div>
+      <div class="field"><label>目前體脂率</label><div class="ipt"><input id="bf" type="number" inputmode="decimal" value="32"><span class="unit">%</span></div></div>
+    </div>
+    <div class="genderrow" style="margin-top:16px">
+      <span class="lbl">生理性別（影響基礎代謝計算）</span>
+      <div class="seg" id="gender"><button data-g="f" class="on">女性</button><button data-g="m">男性</button></div>
+    </div>
+  </section>
+
+  <!-- 目標 -->
+  <section class="goalbox">
+    <div class="sec-head"><span class="tag goal">目標</span><h2>設定你的目標值</h2><span class="hint">紫字區</span></div>
+    <div class="grid">
+      <div class="field"><label>目標體重</label><div class="ipt"><input id="wt" type="number" inputmode="decimal" value="45"><span class="unit">kg</span></div></div>
+      <div class="field"><label>目標體脂率</label><div class="ipt"><input id="bft" type="number" inputmode="decimal" value="25"><span class="unit">%</span></div></div>
+    </div>
+    <div class="refnote">💡 目標體重參考算法：<b>身高 − 110</b>，也就是 <b><span id="refw">43</span> kg</b> 附近。體重超重 10 公斤以上者，建議先設定「第一階段目標」；因每人肌肉脂肪比例不同，落在 ±5 公斤區間都算合理。</div>
+  </section>
+
+  <!-- 現況解讀 -->
+  <section>
+    <div class="sec-head"><span class="tag now">解讀</span><h2>身體現況</h2></div>
+    <div class="metrics">
+      <div class="metric hero"><div class="k">基礎代謝值 BMR</div><div class="v"><span id="bmr">—</span><small>大卡/日</small></div><div class="x">維持生命每日最低所需的熱量</div></div>
+      <div class="metric"><div class="k">基礎代謝率（代謝值 ÷ 體重）</div><div class="v"><span id="bmrRate">—</span></div><div class="x">數值越高，代表單位體重的代謝越活躍</div></div>
+    </div>
+    <div class="bmiblock" style="margin-top:18px">
+      <div class="bmibar" id="bmibar"><div class="mk now" id="mkNow"></div><div class="mk goal" id="mkGoal"></div></div>
+      <div class="bmi-legend"><span>過輕 18.5</span><span>健康 24</span><span>過重 27</span><span>肥胖</span></div>
+      <div class="bmi-caps">
+        <span><span class="dot" style="background:var(--rose)"></span>現況 BMI <b id="bmiNow">—</b> <span id="bmiNowTxt" style="color:var(--ink-soft)"></span></span>
+        <span><span class="dot" style="background:var(--plum)"></span>目標 BMI <b id="bmiGoal">—</b> <span id="bmiGoalTxt" style="color:var(--ink-soft)"></span></span>
+      </div>
+    </div>
+    <div class="alert warn" id="alertLow"></div>
+    <div class="alert info" id="alertHigh"></div>
+  </section>
+
+  <!-- 目標拆解 -->
+  <section>
+    <div class="sec-head"><span class="tag goal">計畫</span><h2>達標拆解</h2></div>
+    <div class="bigrow">
+      <div class="big loss"><div class="k">總共要減</div><div class="v"><span id="totalLoss">—</span><small>kg</small></div><div class="x">其中脂肪重量約 <b id="fatLoss">—</b> kg</div></div>
+      <div class="big time"><div class="k">預估達標時間</div><div class="v"><span id="months">—</span><small>個月</small></div><div class="x">依所選健康節奏計算</div></div>
+    </div>
+    <div class="pacewrap">
+      <span class="lbl">每月健康節奏</span>
+      <div class="pace rose" id="pace"><button data-p="3" class="on">和緩 3%</button><button data-p="4">穩定 4%</button><button data-p="5">積極 5%</button></div>
+      <span class="lbl" style="margin-left:auto">約 <b id="paceKg" style="color:var(--rose)">—</b> kg/月</span>
+    </div>
+    <div class="path" id="path"></div>
+  </section>
+
+  <!-- 每日飲食試算 TDEE -->
+  <section class="foodbox">
+    <div class="sec-head"><span class="tag food">飲食</span><h2>每日消耗與飲食份量</h2><span class="hint">TDEE</span></div>
+
+    <div class="grid">
+      <div class="field">
+        <label>活動程度</label>
+        <div class="ipt"><select id="activity">
+          <option value="1.2">完全沒有運動</option>
+          <option value="1.375" selected>每週三次內</option>
+          <option value="1.42">每週運動四次</option>
+          <option value="1.46">每週運動五次</option>
+          <option value="1.63">每週運動六次</option>
+          <option value="1.72">每週運動七次</option>
+          <option value="1.9">超激烈運動（1天2次）</option>
+        </select></div>
+      </div>
+      <div class="field">
+        <label>維持體重熱量 TDEE（可微調）</label>
+        <div class="ipt"><input id="tdee" type="number" inputmode="numeric" value="1766"><span class="unit">大卡</span></div>
+        <div class="sug">建議值 <b id="tdeeSug">—</b> 大卡＝基礎代謝 × 活動係數</div>
+      </div>
+    </div>
+
+    <div class="pacewrap" style="margin-top:18px">
+      <span class="lbl">減脂強度</span>
+      <div class="pace" id="strength">
+        <button data-s="0">維持</button>
+        <button data-s="-0.10">最少 −10%</button>
+        <button data-s="-0.15" class="on">正常 −15%</button>
+        <button data-s="-0.25">積極 −25%</button>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:14px">
+      <div class="field">
+        <label>每日目標熱量（實際要吃的量，可微調）</label>
+        <div class="ipt"><input id="target" type="number" inputmode="numeric" value="1501"><span class="unit">大卡</span></div>
+        <div class="sug">建議值 <b id="targetSug">—</b> 大卡＝TDEE × 減脂強度</div>
+      </div>
+      <div class="field">
+        <label>飲食型態</label>
+        <div class="genderrow" style="margin-top:0">
+          <div class="seg" id="diet" style="border-color:var(--sage-soft)">
+            <button data-d="balance" class="on" style="--on:var(--sage)">均衡飲食</button>
+            <button data-d="lowcarb">低醣飲食</button>
+          </div>
+        </div>
+        <div class="sug" id="dietRatio">碳水 50% · 蛋白質 25% · 油脂 25%</div>
+      </div>
+    </div>
+
+    <div class="alert warn" id="alertFloor"></div>
+
+    <div class="bigrow" style="margin-top:20px">
+      <div class="big cal"><div class="k">每日建議攝取</div><div class="v"><span id="calOut">—</span><small>大卡</small></div><div class="x">分配到三餐，依生活習慣調整</div></div>
+      <div class="big def"><div class="k">每日熱量差</div><div class="v"><span id="deficit">—</span><small>大卡</small></div><div class="x">減 1kg 約需 <b id="days1kg">—</b> 天</div></div>
+    </div>
+
+    <!-- portion table -->
+    <div class="macro" id="macro">
+      <div class="row head"><span>營養素</span><span>熱量</span><span style="text-align:right">份量</span></div>
+      <div class="row">
+        <span class="nm"><span class="sw" style="background:#C99A4B"></span><span>碳水化合物<br><span class="pct" id="pC">50%</span></span></span>
+        <span class="kc"><span id="kcC">—</span> 大卡</span>
+        <span class="pt"><span id="ptC">—</span><small>份</small></span>
+      </div>
+      <div class="row">
+        <span class="nm"><span class="sw" style="background:#B85C4D"></span><span>蛋白質<br><span class="pct" id="pP">25%</span></span></span>
+        <span class="kc"><span id="kcP">—</span> 大卡</span>
+        <span class="pt"><span id="ptP">—</span><small>份</small></span>
+      </div>
+      <div class="row">
+        <span class="nm"><span class="sw" style="background:#7E8C6A"></span><span>油脂<br><span class="pct" id="pF">25%</span></span></span>
+        <span class="kc"><span id="kcF">—</span> 大卡</span>
+        <span class="pt"><span id="ptF">—</span><small>份</small></span>
+      </div>
+    </div>
+
+    <div class="veg">🥬 <div><b>蔬菜每天至少 5 份</b>，不論哪種飲食都要吃，可以更多；<b>水果每天最多 1 份</b>。蔬果份量不計入上方熱量分配。</div></div>
+
+    <div class="portion-guide">
+      <b>份量怎麼抓：</b>碳水與蛋白質，<b>1 份 = 1 個拳頭</b>；油脂融入烹調，<b>1 份 = 1 湯匙橄欖油（約 15ml）</b>或 <b>5 顆腰果</b>。把一天的總份量，依生活習慣分配到三餐即可。
+    </div>
+  </section>
+
+  <!-- 送出 -->
+  <section class="submitbox">
+    <div class="sec-head"><span class="tag now">完成</span><h2>確認並下載你的專屬報告</h2></div>
+    <p style="font-size:.9rem;color:var(--ink-soft);margin-bottom:18px">確認資料後，系統會產生一張 A4 報告供你下載留存（方便日後回顧），同時把這份紀錄送給 TATA FLOW 顧問，讓她能為你持續追蹤與調整。</p>
+    <button id="confirmBtn" class="cta">確認送出並下載報告</button>
+    <div id="submitMsg" class="submitmsg"></div>
+    <p class="privacy">🔒 你填寫的資料僅提供給 TATA FLOW 顧問作為健康諮詢用途，不會對外公開。</p>
+  </section>
+
+  <!-- 注意事項 -->
+  <section class="note">
+    <h3>💗 給你的提醒</h3>
+    <p>每月瘦身速度與熱量換算都是以平均值計算作為參考。因為每個人的年齡、體質、飲食品質、飲食精準度、生活習慣都不同，實際速度有落差是很正常的——畢竟我們不是機器人。</p>
+    <p>基礎代謝值依身體素質與量測儀器不同，可能有 10–15% 的誤差。健康不是越少吃越好，長期吃低於基礎代謝的熱量並不理想。先天體質較弱的人，需要付出的努力與時間會多一些，這不是你的錯，慢慢來一樣會抵達。</p>
+  </section>
+
+  <footer>由 <span class="brand">TATA FLOW</span> · 陪你把目標拆成走得到的每一步</footer>
+
+</div>
+
+<!-- 隱藏的 A4 報告版型（轉成 PDF 用） -->
+<div id="reportWrap" aria-hidden="true">
+  <div id="report" class="report">
+    <div class="r-top">
+      <div class="r-brand">TATA FLOW<span>循環 · 塑形 · 健康瘦身</span></div>
+      <div class="r-title">個人化瘦身與飲食計畫<small id="r_date">—</small></div>
+    </div>
+    <div class="r-meta"><span>姓名：<b id="r_name">—</b></span><span>聯絡：<b id="r_contact">—</b></span></div>
+    <div class="r-grid">
+      <div class="r-panel now">
+        <div class="r-h"><span class="pip" style="background:var(--rose)"></span>身體現況</div>
+        <div class="r-list">
+          <span class="li">體重<b id="r_w">—</b></span>
+          <span class="li">身高<b id="r_h">—</b></span>
+          <span class="li">年齡<b id="r_a">—</b></span>
+          <span class="li">性別<b id="r_g">—</b></span>
+          <span class="li">體脂率<b id="r_bf">—</b></span>
+          <span class="li">BMI<b id="r_bmi">—</b></span>
+          <span class="li">基礎代謝<b id="r_bmr">—</b></span>
+          <span class="li">代謝率<b id="r_rate">—</b></span>
+        </div>
+      </div>
+      <div class="r-panel goal">
+        <div class="r-h"><span class="pip" style="background:var(--plum)"></span>瘦身目標</div>
+        <div class="r-list">
+          <span class="li">目標體重<b id="r_wt">—</b></span>
+          <span class="li">目標體脂<b id="r_bft">—</b></span>
+          <span class="li">目標BMI<b id="r_bmig">—</b></span>
+          <span class="li">總共要減<b id="r_total">—</b></span>
+          <span class="li">脂肪重量<b id="r_fat">—</b></span>
+          <span class="li">每月節奏<b id="r_pace">—</b></span>
+          <span class="li" style="grid-column:1/-1">預估達標時間<b id="r_months">—</b></span>
+        </div>
+      </div>
+      <div class="r-panel food">
+        <div class="r-h"><span class="pip" style="background:var(--sage)"></span>每日飲食建議（<span id="r_dietname">—</span>）</div>
+        <div class="r-list" style="grid-template-columns:1fr 1fr 1fr">
+          <span class="li">維持熱量 TDEE<b id="r_tdee">—</b></span>
+          <span class="li">每日建議攝取<b id="r_target">—</b></span>
+          <span class="li">每日熱量差<b id="r_def">—</b></span>
+        </div>
+        <div class="r-macro">
+          <div class="r-mac"><div class="t">碳水化合物 <span id="r_pC">—</span></div><div class="n"><span id="r_ptC">—</span><small> 份</small></div><div class="kc"><span id="r_kcC">—</span> 大卡</div></div>
+          <div class="r-mac"><div class="t">蛋白質 <span id="r_pP">—</span></div><div class="n"><span id="r_ptP">—</span><small> 份</small></div><div class="kc"><span id="r_kcP">—</span> 大卡</div></div>
+          <div class="r-mac"><div class="t">油脂 <span id="r_pF">—</span></div><div class="n"><span id="r_ptF">—</span><small> 份</small></div><div class="kc"><span id="r_kcF">—</span> 大卡</div></div>
+        </div>
+        <div class="r-veg">🥬 <b>蔬菜每天至少 5 份</b>（可更多）、<b>水果每天最多 1 份</b>。碳水與蛋白質 1 份＝1 個拳頭；油脂 1 份＝1 湯匙橄欖油（15ml）或 5 顆腰果。依此節奏，<b>減 1kg 約需 <span id="r_days">—</span> 天</b>。</div>
+      </div>
+    </div>
+    <div class="r-note">💗 提醒：每月瘦身速度與熱量換算皆為平均值參考，實際會因體質、飲食品質與生活習慣而異；基礎代謝量測可能有 10–15% 誤差。健康不是越少吃越好，長期低於基礎代謝並不理想。慢慢來，一樣會抵達。</div>
+    <div class="r-foot"><span class="bd">TATA FLOW</span><span id="r_foot_date">—</span></div>
+  </div>
+
+  <!-- 第2頁：體態數據測量表 -->
+  <div id="report2" class="report">
+    <div class="r-top"><div class="r-brand">TATA FLOW<span>循環 · 塑形 · 健康瘦身</span></div><div class="r-title">體態數據測量表<small>每週固定測量一次</small></div></div>
+    <div class="info-line">姓名 <span class="u" id="m_name">&nbsp;</span>　性別 <span class="u" id="m_gender">&nbsp;</span>　年齡 <span class="u" id="m_age">&nbsp;</span> 歲　身高 <span class="u" id="m_h">&nbsp;</span> cm　職業 <span class="u">&nbsp;</span><br>體脂機(型號) <span class="u">&nbsp;</span>　諮詢師 <span class="u">&nbsp;</span>　電話 <span class="u">&nbsp;</span></div>
+    <table class="mtbl" id="mtblData"></table>
+    <table class="mtbl" id="mtblGirth" style="margin-top:13px"></table>
+    <div class="tipbox">
+      <div class="tip rose"><b>📸 拍體態照（最重要）</b>每週一次、白牆前拍正面／側面／背面。女生緊身運動內衣＋短褲，手叉腰放褲頭不遮肉。手機原相機、不用濾鏡美肌，每次同服裝同背景同角度。</div>
+      <div class="tip"><b>📏 量圍度 & 體重</b>圍度用皮尺；體重計固定早上空腹、都用同一台機器，每週量一次（別天天量）。體態照＋圍度＋數據一起比對，成果最真實。</div>
+    </div>
+    <div class="r-foot"><span class="bd">TATA FLOW</span><span>體態數據測量表</span></div>
+  </div>
+
+  <!-- 第3頁：飲食記錄表 -->
+  <div id="report3" class="report">
+    <div class="r-top"><div class="r-brand">TATA FLOW<span>循環 · 塑形 · 健康瘦身</span></div><div class="r-title">飲食記錄表<small>對照每日目標份量．誠實紀錄</small></div></div>
+    <div class="target-banner">🎯 <b>每日目標</b>　<span class="cal"><span id="b_cal">—</span> 大卡</span>　｜　碳水 <b><span id="b_c">—</span></b> 份　蛋白質 <b><span id="b_p">—</span></b> 份　油脂 <b><span id="b_f">—</span></b> 份　蔬菜 <b>5+</b> 份　水果 <b>≤1</b> 份<br><span style="font-size:11px;color:#6a7357">份量抓法：碳水 / 蛋白質 1 份＝1 個拳頭；油脂 1 份＝1 湯匙橄欖油（15ml）或 5 顆腰果</span></div>
+    <table class="dtbl" id="dtbl"></table>
+    <div class="tip" style="margin-top:12px"><b style="color:var(--sage)">✍️ 使用方式</b>每天記下實際吃的內容，對照上方目標份量檢視。三餐＋點心都寫，順手記錄飲水與運動。紀錄是為了看見自己的進步，不是為了苛責自己——誠實就是最好的開始。</div>
+    <div class="r-foot"><span class="bd">TATA FLOW</span><span>飲食記錄表</span></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const body = {w:$('w'),h:$('h'),a:$('a'),bf:$('bf'),wt:$('wt'),bft:$('bft')};
+  let gender='f', pace=3, activity=1.375, strength=-0.15, diet='balance';
+  const DIETS={balance:{c:.5,p:.25,f:.25,label:'碳水 50% · 蛋白質 25% · 油脂 25%'},
+               lowcarb:{c:.2,p:.3,f:.5,label:'碳水 20% · 蛋白質 30% · 油脂 50%'}};
+  const DIV={c:240,p:60,f:120}; // 大卡/份
+
+  const num=el=>{const v=parseFloat(el.value);return isFinite(v)?v:0;};
+  const fmt=(n,d)=>isFinite(n)?(Math.round(n*Math.pow(10,d))/Math.pow(10,d)).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:d}):'—';
+  function bmiBand(b){if(b<18.5)return{t:'過輕'};if(b<24)return{t:'健康'};if(b<27)return{t:'過重'};return{t:'肥胖'};}
+  const bmiPct=b=>Math.max(0,Math.min(100,(b-16)/18*100));
+
+  function currentBMR(){
+    const w=num(body.w),h=num(body.h),a=num(body.a);
+    return gender==='f' ? 655+9.6*w+1.8*h-4.7*a : 66+13.7*w+5*h-6.8*a;
+  }
+
+  // ---- goal section ----
+  function calcGoal(){
+    const w=num(body.w),h=num(body.h),bf=num(body.bf),wt=num(body.wt),bft=num(body.bft);
+    const hm=h/100, bmr=currentBMR();
+    $('bmr').textContent=fmt(bmr,1);
+    $('bmrRate').textContent=w>0?fmt(bmr/w,2):'—';
+    $('refw').textContent=fmt(h-110,0);
+
+    const bmiNow=hm>0?w/(hm*hm):0, bmiGoal=hm>0?wt/(hm*hm):0;
+    $('bmiNow').textContent=fmt(bmiNow,1); $('bmiGoal').textContent=fmt(bmiGoal,1);
+    $('bmiNowTxt').textContent='（'+bmiBand(bmiNow).t+'）';
+    $('bmiGoalTxt').textContent='（'+bmiBand(bmiGoal).t+'）';
+    $('mkNow').style.left=bmiPct(bmiNow)+'%'; $('mkGoal').style.left=bmiPct(bmiGoal)+'%';
+
+    const totalLoss=w-wt, fatLoss=w*(bf/100)-wt*(bft/100);
+    $('totalLoss').textContent=fmt(totalLoss,1); $('fatLoss').textContent=fmt(fatLoss,2);
+    const kgPerMonth=w*(pace/100);
+    $('paceKg').textContent=fmt(kgPerMonth,2);
+    $('months').textContent=totalLoss>0?fmt(kgPerMonth>0?totalLoss/kgPerMonth:0,1):'0';
+
+    const aLow=$('alertLow'),aHigh=$('alertHigh');
+    aLow.classList.remove('show');aHigh.classList.remove('show');
+    if(bmiGoal>0&&bmiGoal<18.5){aLow.classList.add('show');
+      aLow.innerHTML='⚠️ <b>目標 BMI '+fmt(bmiGoal,1)+' 已低於健康下限（18.5）。</b>健康不等於越輕越好，過度追求低體重可能影響代謝、荷爾蒙與循環。建議把目標調到 BMI 18.5 以上（約 '+fmt(18.5*hm*hm,1)+' kg），更長久也更好維持。';
+    }else if(bmiNow>=27&&totalLoss>10){aHigh.classList.add('show');
+      aHigh.innerHTML='💡 <b>目前一次要減超過 10 公斤。</b>建議先設「第一階段目標」（例如先減 5–6 公斤），達成後再往下一階段，成功率更高也更不易復胖。';
+    }
+    buildPath(w,wt,kgPerMonth,hm);
+  }
+  function buildPath(w,wt,kgPerMonth,hm){
+    const box=$('path');box.innerHTML='';
+    const total=w-wt;
+    if(total<=0||kgPerMonth<=0){box.innerHTML='<div class="step start"><div class="node">✓</div><div class="body"><span class="w">目前已達標或無需減重 🎉</span></div></div>';return;}
+    const steps=Math.ceil(total/kgPerMonth), cap=Math.min(steps,12);
+    addStep(box,'start','起','現在',w,hm);
+    for(let m=1;m<=cap;m++){let cur=w-kgPerMonth*m,fin=false;if(cur<=wt){cur=wt;fin=true;}addStep(box,fin?'finish':'',fin?'★':m,'第 '+m+' 個月',cur,hm);if(fin)break;}
+    if(steps>12){const d=document.createElement('div');d.className='step';d.innerHTML='<div class="node" style="background:var(--ink-soft)">…</div><div class="body"><span class="m">依此節奏約第 '+fmt(steps,0)+' 個月抵達目標 '+fmt(wt,1)+' kg</span></div>';box.appendChild(d);}
+  }
+  function addStep(box,cls,label,mtext,weight,hm){
+    const bmi=hm>0?weight/(hm*hm):0,b=bmiBand(bmi),d=document.createElement('div');
+    d.className='step '+cls;
+    d.innerHTML='<div class="node">'+label+'</div><div class="body"><span class="m">'+mtext+'</span><span class="w">'+fmt(weight,1)+'<small> kg</small> <span class="bmi-pill">BMI '+fmt(bmi,1)+' · '+b.t+'</span></span></div>';
+    box.appendChild(d);
+  }
+
+  // ---- TDEE / diet section ----
+  function suggestTDEE(){return currentBMR()*activity;}
+  function suggestTarget(){return (parseFloat($('tdee').value)||0)*(1+strength);}
+
+  function calcDiet(){
+    $('tdeeSug').textContent=fmt(suggestTDEE(),0);
+    $('targetSug').textContent=fmt(suggestTarget(),0);
+    const tdee=parseFloat($('tdee').value)||0;
+    const target=parseFloat($('target').value)||0;
+    const bmr=currentBMR();
+
+    // floor warning
+    const fl=$('alertFloor');fl.classList.remove('show');
+    if(target>0&&target<bmr){fl.classList.add('show');
+      fl.innerHTML='⚠️ <b>每日目標熱量 '+fmt(target,0)+' 已低於基礎代謝 '+fmt(bmr,0)+' 大卡。</b>長期吃低於基礎代謝容易造成代謝下降、掉肌肉與復胖。若要更積極，建議搭配運動拉高消耗，而非把吃的壓到基礎代謝以下。';
+    }
+
+    const r=DIETS[diet];
+    $('dietRatio').textContent=r.label;
+    $('pC').textContent=Math.round(r.c*100)+'%';
+    $('pP').textContent=Math.round(r.p*100)+'%';
+    $('pF').textContent=Math.round(r.f*100)+'%';
+    const kcC=target*r.c,kcP=target*r.p,kcF=target*r.f;
+    $('kcC').textContent=fmt(kcC,0);$('kcP').textContent=fmt(kcP,0);$('kcF').textContent=fmt(kcF,0);
+    $('ptC').textContent=fmt(kcC/DIV.c,1);$('ptP').textContent=fmt(kcP/DIV.p,1);$('ptF').textContent=fmt(kcF/DIV.f,1);
+
+    $('calOut').textContent=fmt(target,0);
+    const deficit=tdee-target;
+    $('deficit').textContent=fmt(deficit,0);
+    $('days1kg').textContent=deficit>0?fmt(7700/deficit,1):'—';
+  }
+
+  // fill target field from current suggestions
+  function refillTDEE(){$('tdee').value=Math.round(suggestTDEE());}
+  function refillTarget(){$('target').value=Math.round(suggestTarget());}
+
+  function recalcAll(refillT,refillTg){
+    calcGoal();
+    if(refillT)refillTDEE();
+    if(refillTg)refillTarget();
+    calcDiet();
+  }
+
+  // ---- events ----
+  Object.values(body).forEach(el=>el.addEventListener('input',()=>recalcAll(true,true)));
+  $('gender').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;gender=b.dataset.g;[...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));recalcAll(true,true);});
+  $('pace').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;pace=parseFloat(b.dataset.p);[...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));calcGoal();});
+  $('activity').addEventListener('change',e=>{activity=parseFloat(e.target.value);recalcAll(true,true);});
+  $('tdee').addEventListener('input',()=>{refillTarget();calcDiet();});
+  $('strength').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;strength=parseFloat(b.dataset.s);[...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));refillTarget();calcDiet();});
+  $('target').addEventListener('input',calcDiet);
+  $('diet').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;diet=b.dataset.d;[...e.currentTarget.children].forEach(x=>{x.classList.toggle('on',x===b);x.style.background=x===b?'var(--sage)':'transparent';x.style.color=x===b?'#fff':'var(--ink-soft)';});calcDiet();});
+
+  // ---------- 確認送出 + A4 報告 ----------
+  // ⬇⬇⬇ 部署 Apps Script 後，把這行網址換成你的「網頁應用程式」網址（/exec 結尾）
+  const GAS_URL = 'https://script.google.com/macros/s/請貼上你的AppsScript網址/exec';
+
+  const activeTxt = id => { const b=$(id).querySelector('.on'); return b?b.textContent.trim():''; };
+  const txt = id => $(id).textContent;
+
+  function collectData(){
+    const gmap={f:'女性',m:'男性'};
+    return {
+      submittedAt:new Date().toLocaleString('zh-TW',{hour12:false}),
+      name:($('cname').value||'').trim(), contact:($('ccontact').value||'').trim(),
+      weight:$('w').value, height:$('h').value, age:$('a').value, gender:gmap[gender], bodyFat:$('bf').value,
+      bmr:txt('bmr'), bmrRate:txt('bmrRate'), bmiNow:txt('bmiNow'),
+      targetWeight:$('wt').value, targetBodyFat:$('bft').value, bmiGoal:txt('bmiGoal'),
+      totalLoss:txt('totalLoss'), fatLoss:txt('fatLoss'), pace:activeTxt('pace'), months:txt('months'),
+      activity:$('activity').selectedOptions[0].text, tdee:$('tdee').value, targetCal:$('target').value,
+      strength:activeTxt('strength'), diet:activeTxt('diet'), dietRatio:txt('dietRatio'),
+      deficit:txt('deficit'), days1kg:txt('days1kg'),
+      carbKc:txt('kcC'), carbPt:txt('ptC'), proKc:txt('kcP'), proPt:txt('ptP'), fatKc:txt('kcF'), fatPt:txt('ptF')
+    };
+  }
+
+  const setR = (id,v) => { const el=$(id); if(el) el.textContent=v; };
+  function fillReport(d){
+    const n=new Date();
+    const ds=n.getFullYear()+'/'+String(n.getMonth()+1).padStart(2,'0')+'/'+String(n.getDate()).padStart(2,'0');
+    setR('r_date',ds); setR('r_foot_date','製表日期 '+ds);
+    setR('r_name',d.name||'—'); setR('r_contact',d.contact||'—');
+    setR('r_w',d.weight+' kg'); setR('r_h',d.height+' cm'); setR('r_a',d.age+' 歲'); setR('r_g',d.gender);
+    setR('r_bf',d.bodyFat+' %'); setR('r_bmi',d.bmiNow); setR('r_bmr',d.bmr+' 大卡'); setR('r_rate',d.bmrRate);
+    setR('r_wt',d.targetWeight+' kg'); setR('r_bft',d.targetBodyFat+' %'); setR('r_bmig',d.bmiGoal);
+    setR('r_total',d.totalLoss+' kg'); setR('r_fat',d.fatLoss+' kg'); setR('r_pace',d.pace); setR('r_months',d.months+' 個月');
+    setR('r_dietname',d.diet); setR('r_tdee',d.tdee+' 大卡'); setR('r_target',d.targetCal+' 大卡'); setR('r_def',d.deficit+' 大卡');
+    setR('r_pC',$('pC').textContent); setR('r_pP',$('pP').textContent); setR('r_pF',$('pF').textContent);
+    setR('r_ptC',d.carbPt); setR('r_kcC',d.carbKc); setR('r_ptP',d.proPt); setR('r_kcP',d.proKc); setR('r_ptF',d.fatPt); setR('r_kcF',d.fatKc);
+    setR('r_days',d.days1kg);
+    // ---- 第2頁：預填基準欄 ----
+    setR('m_name',d.name||''); setR('m_gender',d.gender); setR('m_age',d.age); setR('m_h',d.height);
+    setR('m_w',d.weight); setR('m_bmi',d.bmiNow); setR('m_bf',d.bodyFat);
+    setR('m_cfat',(parseFloat(d.weight)*parseFloat(d.bodyFat)/100||0).toFixed(1));
+    setR('m_bmr',d.bmr); setR('m_rate',d.bmrRate);
+    const dh=$('mtblData').querySelector('thead th:nth-child(2)'); if(dh) dh.textContent=(new Date().getMonth()+1)+'/'+new Date().getDate();
+    // ---- 第3頁：目標份量 ----
+    setR('b_cal',d.targetCal); setR('b_c',d.carbPt); setR('b_p',d.proPt); setR('b_f',d.fatPt);
+  }
+
+  // ---- 建立第2、3頁的表格 ----
+  function buildMeasure(){
+    const COLS=8;
+    const dateHead='<th class="rowlab">量身日期</th>'+Array.from({length:COLS},()=>'<th>／</th>').join('');
+    const colg='<colgroup><col style="width:23%">'+'<col style="width:9.625%">'.repeat(COLS)+'</colgroup>';
+    const dataRows=[
+      ['體重','kg','m_w'],['BMI','','m_bmi'],['體脂','%','m_bf'],['脂肪重','體重×體脂%','m_cfat'],
+      ['差異','',null,1],['骨骼肌率','男38% ｜ 女31%',null],['肌肉重','體重×肌肉%',null],['差異','',null,1],
+      ['內臟脂肪','1~4 標準',null],['基礎代謝率','','m_bmr'],['代謝基準值','基代÷體重','m_rate'],['差異','',null,1],['體年齡','',null]
+    ];
+    const girthRows=[
+      ['右上臂圍','上臂中心點'],['差異','',null,1],['腰圍','平行肚臍'],['差異','',null,1],
+      ['腹圍','肚臍下 5 公分'],['差異','',null,1],['臀圍','臀部最高點·離地約70cm'],['差異','',null,1],
+      ['右大腿圍','最粗處·離地約60cm'],['差異','',null,1],['右小腿圍','最粗處'],['差異','',null,1]
+    ];
+    const body=rows=>rows.map(r=>{
+      const [lab,sub,pid,diff]=r;
+      let tds='';for(let c=0;c<COLS;c++)tds+=(c===0&&pid)?('<td class="pf" id="'+pid+'"></td>'):'<td></td>';
+      return '<tr'+(diff?' class="diff"':'')+'><th>'+lab+(sub?'<small>'+sub+'</small>':'')+'</th>'+tds+'</tr>';
+    }).join('');
+    $('mtblData').innerHTML='<caption>① 量身紀錄表（體組成）</caption>'+colg+'<thead><tr>'+dateHead+'</tr></thead><tbody>'+body(dataRows)+'</tbody>';
+    $('mtblGirth').innerHTML='<caption>② 量身六圍（皮尺 · 公分）</caption>'+colg+'<thead><tr>'+dateHead+'</tr></thead><tbody>'+body(girthRows)+'</tbody>';
+  }
+  function buildDiet(){
+    const cols=['日期','早餐','午餐','晚餐','點心 / 飲料','飲水<br>(cc)','運動 / 備註'];
+    const cg='<colgroup><col style="width:8%"><col style="width:20%"><col style="width:20%"><col style="width:20%"><col style="width:14%"><col style="width:8%"><col style="width:10%"></colgroup>';
+    const head='<thead><tr>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr></thead>';
+    let rows='';for(let i=1;i<=7;i++)rows+='<tr><td class="day">第 '+i+' 天<br><small style="font-weight:400;color:#8A727C">＿/＿</small></td>'+'<td></td>'.repeat(6)+'</tr>';
+    $('dtbl').innerHTML=cg+head+'<tbody>'+rows+'</tbody>';
+  }
+
+  async function generatePDF(d){
+    await document.fonts.ready;
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF('p','mm','a4');
+    const pw=210, ph=297, ids=['report','report2','report3'];
+    for(let i=0;i<ids.length;i++){
+      const el=$(ids[i]); if(!el) continue;
+      const canvas=await html2canvas(el,{scale:2,backgroundColor:'#ffffff',useCORS:true});
+      let iw=pw, ih=canvas.height*pw/canvas.width;
+      if(ih>ph){ ih=ph; iw=canvas.width*ph/canvas.height; }   // 縮到剛好一頁，避免切到表格
+      if(i>0) pdf.addPage();
+      pdf.addImage(canvas,'PNG',(pw-iw)/2,0,iw,ih);
+    }
+    const safe=(d.name||'client').replace(/[\\\/:*?"<>|\s]/g,'') || 'client';
+    const n=new Date(), ds=n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0');
+    pdf.save('TATA_FLOW_瘦身計畫_'+safe+'_'+ds+'.pdf');
+  }
+
+  const showMsg=(cls,html)=>{const m=$('submitMsg');m.className='submitmsg show '+cls;m.innerHTML=html;};
+
+  async function onConfirm(){
+    const name=($('cname').value||'').trim();
+    if(!name){showMsg('err','請先填寫「姓名 / 暱稱」🙏');$('cname').focus();return;}
+    if(!(num($('w'))>0 && num($('h'))>0 && num($('a'))>0)){showMsg('err','請確認體重、身高、年齡都已填寫 🙏');return;}
+    const btn=$('confirmBtn'); btn.disabled=true; btn.textContent='處理中…';
+    showMsg('ok','正在產生報告，請稍候…');
+    const data=collectData();
+    // 1) 送到後台（盡力而為，失敗不影響下載）
+    try{
+      if(GAS_URL.indexOf('請貼上')===-1){
+        await fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+      }
+    }catch(e){ /* 略過後台錯誤 */ }
+    // 2) 產生並下載 PDF
+    try{
+      fillReport(data);
+      await generatePDF(data);
+      showMsg('ok',successMsg());
+    }catch(e){
+      console.error(e);
+      showMsg('err','報告產生時發生問題，請重新整理頁面後再試一次。');
+    }
+    btn.disabled=false; btn.textContent='確認送出並下載報告';
+  }
+  // ---- 偵測 LINE / IG / FB 內建瀏覽器，提醒改用預設瀏覽器 ----
+  function browserEnv(){
+    const ua=navigator.userAgent||'';
+    const os=/iPhone|iPad|iPod/i.test(ua)?'ios':(/Android/i.test(ua)?'android':'other');
+    let app='';
+    if(/Line\//i.test(ua)) app='LINE';
+    else if(/Instagram/i.test(ua)) app='Instagram';
+    else if(/FBAN|FBAV|FB_IAB/i.test(ua)) app='Facebook';
+    else if(/MicroMessenger/i.test(ua)) app='微信';
+    return {inApp:!!app, app, os};
+  }
+  function initBrowserHint(){
+    const env=browserEnv();
+    if(!env.inApp) return;
+    let how;
+    if(env.os==='ios') how='請點畫面<b>右下角的 ⋯ 或瀏覽器圖示</b> →「<b>用預設瀏覽器開啟</b>」（Safari）';
+    else if(env.os==='android') how='請點<b>右上角的 ⋮</b> →「<b>用其他瀏覽器開啟</b>」（Chrome）';
+    else how='請改用手機的預設瀏覽器（Safari／Chrome）開啟這個頁面';
+    $('iabText').innerHTML='你正在 <b>'+env.app+'</b> 內建的瀏覽器開啟，這裡下載 PDF 常常會失敗或只能預覽。'+how+'，再按下載就能正常存檔。';
+    $('iabBanner').classList.add('show');
+  }
+  function successMsg(){
+    const env=browserEnv();
+    let where;
+    if(env.os==='ios') where='到手機的「檔案」App →「下載項目」查看';
+    else if(env.os==='android') where='到「下載」資料夾或「檔案」App 查看';
+    else where='到電腦的「下載 / Downloads」資料夾查看';
+    const extra = env.inApp ? '<br><span style="color:var(--warn)">若沒看到檔案，請改用預設瀏覽器（Safari／Chrome）重新開啟本頁再下載一次。</span>' : '';
+    return '✓ 報告已下載，資料也已送出給顧問，謝謝你！<br><span style="color:var(--ink-soft)">可'+where+'，檔名為 TATA_FLOW_瘦身計畫…</span>'+extra;
+  }
+
+  $('confirmBtn').addEventListener('click',onConfirm);
+
+  // init: color the active diet button
+  (function(){const on=$('diet').querySelector('.on');on.style.background='var(--sage)';on.style.color='#fff';})();
+  buildMeasure(); buildDiet(); initBrowserHint();
+  recalcAll(true,true);
+})();
+</script>
+</body>
+</html>
